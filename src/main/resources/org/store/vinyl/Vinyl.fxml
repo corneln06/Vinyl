@@ -31,8 +31,8 @@
                               <Image url="@../../../Images/pic.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="bookButton" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
-                        <Label layoutX="35.0" layoutY="90.0" text="AT‑LP60X " />
+                        <Button fx:id="bookButton" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" userData="AT-LP60X" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
+                        <Label layoutX="35.0" layoutY="90.0" text="AT‑LP60X" />
                      </children>
                   </Pane>
                   <Pane prefHeight="155.0" prefWidth="124.0" style="-fx-background-color: AFAFAF; -fx-background-radius: 10;" HBox.hgrow="ALWAYS">
@@ -45,7 +45,7 @@
                               <Image url="@../../../Images/pic.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="bookButton1" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
+                        <Button fx:id="bookButton1" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" userData="Sony PS-LX310BT" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
                         <Label layoutX="14.0" layoutY="90.0" text="Sony PS‑LX310BT" />
                      </children>
                   </Pane>
@@ -59,7 +59,7 @@
                               <Image url="@../../../Images/pic.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="bookButton2" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
+                        <Button fx:id="bookButton2" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" userData="Lenco L-85" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
                         <Label layoutX="35.0" layoutY="90.0" text="Lenco L‑85" />
                      </children>
                   </Pane>
@@ -73,7 +73,7 @@
                               <Image url="@../../../Images/pic.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="bookButton3" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
+                        <Button fx:id="bookButton3" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" userData="Victrola Journey+" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
                         <Label layoutX="19.0" layoutY="91.0" text="Victrola Journey+" />
                      </children>
                   </Pane>
@@ -91,7 +91,7 @@
                               <Image url="@../../../Images/pic.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="bookButton4" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
+                        <Button fx:id="bookButton4" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" userData="Fluance RT85" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
                         <Label layoutX="28.0" layoutY="90.0" text="Fluance RT85" />
                      </children>
                   </Pane>
@@ -105,7 +105,7 @@
                               <Image url="@../../../Images/pic.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="bookButton5" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
+                        <Button fx:id="bookButton5" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" userData="TEAC TN-280BT-A3" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
                         <Label layoutX="8.0" layoutY="90.0" text="TEAC TN‑280BT‑A3" />
                      </children>
                   </Pane>
@@ -119,7 +119,7 @@
                               <Image url="@../../../Images/pic.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="bookButton6" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
+                        <Button fx:id="bookButton6" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" userData="NAD C558" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
                         <Label layoutX="35.0" layoutY="90.0" text="NAD C558" />
                      </children>
                   </Pane>
@@ -133,7 +133,7 @@
                               <Image url="@../../../Images/pic.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="bookButton7" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
+                        <Button fx:id="bookButton7" layoutX="21.0" layoutY="129.0" mnemonicParsing="false" onAction="#openWindow" userData="TT-4 MK2" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: #51D03A; -fx-background-radius: 30;" text="Book" textFill="WHITE" />
                         <Label layoutX="35.0" layoutY="90.0" text="TT‑4 MK2" />
                      </children>
                   </Pane>
