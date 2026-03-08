@@ -1,7 +1,5 @@
-package org.store.vinyl;
+package org.store.vinyl.Model.States;
 
-import org.store.vinyl.Model.States.AvailableState;
-import org.store.vinyl.Model.States.State;
 import org.store.vinyl.Model.Vinyl;
 
 public class BorrowedState implements State {

@@ -1,4 +1,4 @@
-package org.store.vinyl;
+package org.store.vinyl.ViewModel;
 
 import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;

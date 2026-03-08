@@ -1,8 +1,6 @@
 package org.store.vinyl.Model.States;
 
-import org.store.vinyl.BorrowedState;
 import org.store.vinyl.Model.Vinyl;
-import org.store.vinyl.ReservedState;
 
 public class AvailableState implements State {
 
