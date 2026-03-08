@@ -1,4 +1,4 @@
-package org.store.vinyl;
+package org.store.vinyl.Model;
 
 public class User
 {

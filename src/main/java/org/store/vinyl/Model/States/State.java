@@ -1,8 +1,8 @@
-package org.store.vinyl.Interfaces;
+package org.store.vinyl.Model.States;
 
 
 
-import org.store.vinyl.Vinyl;
+import org.store.vinyl.Model.Vinyl;
 
 public interface State
 {
