@@ -1,5 +1,7 @@
 package org.store.vinyl;
 
+import javafx.beans.property.StringProperty;
+
 public class User
 {
   private String name;

@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,11 +23,14 @@ public class VinylBookController implements Initializable {
 
     @FXML
     private FlowPane vinylContainer;
+    @FXML
+    private ChoiceBox<String> userSelector;
 
     private StackPane openedCard = null;
     private Pane openedFront = null;
     private Pane openedBack = null;
     private boolean isFlipping = false;
+    private User currentUser;
 
     private final List<Vinyl> vinyls = List.of(
             new Vinyl("Abbey Road", "The Beatles", 1969),
@@ -42,9 +46,18 @@ public class VinylBookController implements Initializable {
             new Vinyl("Why Cornel is gay", "Led Zeppelin", 1971)
     );
 
+    private final List<User> users = List.of(
+            new User("Deadpool", "deadpool"),
+            new User("Daredevil", "daredevil"),
+            new User("Iron Man", "ironman"),
+            new User("Hulk", "hulk"),
+            new User("Thanos", "thanos")
+    );
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         renderVinyls();
+        addUsers();
     }
 
     private void renderVinyls() {
@@ -54,6 +67,19 @@ public class VinylBookController implements Initializable {
             Pane card = createVinylCard(vinyl);
             vinylContainer.getChildren().add(card);
         }
+    }
+
+    private void addUsers() {
+        userSelector.getItems().addAll(
+                users.stream().map(User::getName).toList()
+        );
+    }
+
+    public void setCurrentUser() {
+        currentUser = users.stream()
+                .filter(u -> u.getName().equals(userSelector.getValue()))
+                .findFirst()
+                .orElse(null);
     }
 
     private Pane createVinylCard(Vinyl vinyl) {
@@ -136,30 +162,34 @@ public class VinylBookController implements Initializable {
         titleLabel.setPrefWidth(94);
         titleLabel.setAlignment(Pos.CENTER);
 
-        Button bookButton = new Button("Book");
+        Button bookButton = new Button();
         bookButton.setId("bookButton");
         bookButton.setLayoutX(21);
         bookButton.setLayoutY(129);
         bookButton.setPrefSize(90, 20);
-        //bookButton.setStyle("-fx-background-color: #51D03A; -fx-background-radius: 30; -fx-text-fill: white;");
 
         Runnable refreshButton = () -> {
-            if ("Borrowed".equals(vinyl.getCurrentState().getStateName()) && vinyl.getReservedBy().isEmpty()) {
-                bookButton.setText("Reserve");
+            if ("Borrowed".equals(vinyl.getCurrentState().getStateName()) && Objects.equals(currentUser.getUserId(), vinyl.getReservedBy())) {
+                bookButton.setText("Return");
                 bookButton.setDisable(false);
-                bookButton.setStyle("-fx-background-color: #51D03A; -fx-background-radius: 30; -fx-text-fill: white;");
-            }
-            else if ("Borrowed".equals(vinyl.getCurrentState().getStateName()) && !vinyl.getReservedBy().isEmpty()) {
+                bookButton.setStyle("-fx-background-color: red; -fx-background-radius: 30; -fx-text-fill: white;");
+            } else if ("Borrowed".equals(vinyl.getCurrentState().getStateName()) && !vinyl.getReservedBy().isEmpty() && Objects.equals(currentUser.getUserId(), vinyl.getReservedBy())) {
+                bookButton.setText("Reserved");
+                bookButton.setDisable(true);
+                bookButton.setStyle("-fx-background-color: grey; -fx-background-radius: 30; -fx-text-fill: white;");
+            } else if ("Borrowed".equals(vinyl.getCurrentState().getStateName()) && !vinyl.getReservedBy().isEmpty() && !Objects.equals(currentUser.getUserId(), vinyl.getReservedBy())) {
                 bookButton.setText("Unavailable");
                 bookButton.setDisable(true);
                 bookButton.setStyle("-fx-background-color: grey; -fx-background-radius: 30; -fx-text-fill: white;");
-            }
-            else if ("Reserved".equals(vinyl.getCurrentState().getStateName())) {
+            } else if ("Reserved".equals(vinyl.getCurrentState().getStateName()) && Objects.equals(currentUser.getUserId(), vinyl.getReservedBy())) {
                 bookButton.setText("Borrow");
                 bookButton.setDisable(false);
                 bookButton.setStyle("-fx-background-color: #51D03A; -fx-background-radius: 30; -fx-text-fill: white;");
-            }
-            else {
+            } else if ("Reserved".equals(vinyl.getCurrentState().getStateName()) && !Objects.equals(currentUser.getUserId(), vinyl.getReservedBy())) {
+                bookButton.setText("Unavailable");
+                bookButton.setDisable(true);
+                bookButton.setStyle("-fx-background-color: grey; -fx-background-radius: 30; -fx-text-fill: white;");
+            } else {
                 bookButton.setText("Book");
                 bookButton.setDisable(false);
                 bookButton.setStyle("-fx-background-color: #51D03A; -fx-background-radius: 30; -fx-text-fill: white;");
@@ -180,12 +210,14 @@ public class VinylBookController implements Initializable {
             e.consume();
 
             if ("Available".equals(vinyl.getCurrentState().getStateName())) {
-                vinyl.borrow(new User("Estefano", "fanobruno"));
+                vinyl.borrow(currentUser);
             } else if ("Borrowed".equals(vinyl.getCurrentState().getStateName()) && vinyl.getReservedBy().isEmpty()) {
-                vinyl.reserve(new User("Estefano", "fanobruno"));
+                vinyl.reserve(currentUser);
             } else if ("Reserved".equals(vinyl.getCurrentState().getStateName())) {
-                vinyl.borrow(new User("Estefano", "fanobruno"));
+                vinyl.borrow(currentUser);
             }
+
+            System.out.println(vinyl.getCurrentState().getStateName());
         });
 
         front.getChildren().addAll(imageView, titleLabel, bookButton);

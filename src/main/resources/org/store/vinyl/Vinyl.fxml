@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="420.0" prefWidth="600.0"
-      xmlns="http://javafx.com/javafx/24.0.1"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.store.vinyl.VinylBookController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.store.vinyl.VinylBookController">
 
     <children>
         <Label layoutX="249.0" layoutY="14.0" text="Vinyl Library">
@@ -20,18 +17,15 @@
             </font>
         </Label>
 
-        <ScrollPane layoutX="15.0" layoutY="54.0" prefHeight="360.0" prefWidth="570.0"
-                    fitToWidth="true" hbarPolicy="NEVER">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="15.0" layoutY="54.0" prefHeight="360.0" prefWidth="570.0">
             <content>
-                <FlowPane fx:id="vinylContainer"
-                          prefWidth="550.0"
-                          hgap="10.0"
-                          vgap="10.0">
+                <FlowPane fx:id="vinylContainer" hgap="10.0" prefWidth="550.0" vgap="10.0">
                     <padding>
-                        <Insets top="5.0" right="5.0" bottom="5.0" left="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </padding>
                 </FlowPane>
             </content>
         </ScrollPane>
+      <ChoiceBox fx:id="userSelector" layoutX="455.0" layoutY="15.0" prefHeight="26.0" prefWidth="130.0" onAction="#setCurrentUser"/>
     </children>
 </Pane>

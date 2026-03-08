@@ -1,5 +1,6 @@
 package org.store.vinyl;
 
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.store.vinyl.Interfaces.PropertyChangeSubject;
@@ -43,6 +44,9 @@ public class Vinyl implements PropertyChangeSubject {
     public String getReservedBy() {
         return reservedBy.get();
     }
+    public State getCurrentState() {
+        return currentState;
+    }
 
     // Setters
     public void setState(State newState) {
@@ -64,10 +68,10 @@ public class Vinyl implements PropertyChangeSubject {
 
     // Vinyl actions
     public void reserve(User user) {
-        currentState.reserve(this, user.getUserId());
+        currentState.reserve(this, user.getUserId().toString());
     }
     public void borrow(User user) {
-        currentState.borrow(this, user.getUserId());
+        currentState.borrow(this, user.getUserId().toString());
     }
     public void returnVinyl() {
         currentState.returnVinyl(this);
@@ -94,9 +98,7 @@ public class Vinyl implements PropertyChangeSubject {
 
     // think we don't need the ones below
 
-    public State getCurrentState() {
-        return currentState;
-    }
+
 
     public StringProperty borrowedByProperty() {
         return borrowedBy;

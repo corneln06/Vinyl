@@ -2,6 +2,7 @@ package org.store.vinyl.Interfaces;
 
 
 
+import javafx.beans.property.StringProperty;
 import org.store.vinyl.Vinyl;
 
 public interface State

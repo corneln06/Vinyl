@@ -1,5 +1,6 @@
 package org.store.vinyl;
 
+import javafx.beans.property.SimpleStringProperty;
 import org.store.vinyl.Interfaces.State;
 
 public class BorrowedState implements State {
