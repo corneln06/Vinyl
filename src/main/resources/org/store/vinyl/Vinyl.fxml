@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<<<<<<< Updated upstream
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
@@ -14,3 +15,38 @@
     <Label fx:id="welcomeText"/>
     <Button text="Hello!" onAction="#onHelloButtonClick"/>
 </VBox>
+=======
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="400.0" prefWidth="600.0"
+      xmlns="http://javafx.com/javafx/24.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.store.vinyl.VinylBookController">
+
+    <children>
+        <Label layoutX="249.0" layoutY="14.0" text="Vinyl Library">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+
+        <ScrollPane layoutX="15.0" layoutY="54.0" prefHeight="330.0" prefWidth="570.0"
+                    fitToWidth="true" hbarPolicy="NEVER">
+            <content>
+                <FlowPane fx:id="vinylContainer"
+                          prefWidth="550.0"
+                          hgap="10.0"
+                          vgap="10.0">
+                    <padding>
+                        <Insets top="5.0" right="5.0" bottom="5.0" left="5.0" />
+                    </padding>
+                </FlowPane>
+            </content>
+        </ScrollPane>
+    </children>
+</Pane>
+>>>>>>> Stashed changes
