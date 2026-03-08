@@ -19,6 +19,9 @@ public class VinylCardViewModel implements PropertyChangeListener {
             "-fx-background-color: grey; -fx-background-radius: 30; -fx-text-fill: white;";
     private static final String RED_BUTTON =
             "-fx-background-color: red; -fx-background-radius: 30; -fx-text-fill: white;";
+    private static final String ORANGE_BUTTON =
+            "-fx-background-color: orange; -fx-background-radius: 30; -fx-text-fill: white;";
+
 
     private record ButtonConfig(String text, boolean disabled, String style) {}
 
@@ -118,7 +121,7 @@ public class VinylCardViewModel implements PropertyChangeListener {
                     yield new ButtonConfig("Return", false, RED_BUTTON);
                 }
                 if (!hasReservation) {
-                    yield new ButtonConfig("Reserve", false, GREEN_BUTTON);
+                    yield new ButtonConfig("Reserve", false, ORANGE_BUTTON);
                 }
                 if (isReserver) {
                     yield new ButtonConfig("Reserved", true, GREY_BUTTON);
