@@ -8,7 +8,7 @@ import org.store.vinyl.Data.DemoData;
 import org.store.vinyl.Model.User;
 import org.store.vinyl.Model.Vinyl;
 import org.store.vinyl.ViewModel.VinylBookViewModel;
-import org.store.vinyl.VinylUserSimulator;
+import org.store.vinyl.Simulator.VinylUserSimulator;
 
 import java.util.List;
 
@@ -22,6 +22,7 @@ public class Main extends Application {
         VinylBookViewModel viewModel =
                 new VinylBookViewModel(vinyls, users);
 
+        // ---------------- COMMENT FROM LINE 26 TO 37 TO AVOID THE SIMULATOR TO WORK --------------------------
         Thread t1 = new Thread(new VinylUserSimulator(viewModel, vinyls, users.get(0)));
         Thread t2 = new Thread(new VinylUserSimulator(viewModel, vinyls, users.get(1)));
         Thread t3 = new Thread(new VinylUserSimulator(viewModel, vinyls, users.get(2)));
@@ -34,6 +35,7 @@ public class Main extends Application {
         t1.start();
         t2.start();
         t3.start();
+        // ---------------- COMMENT FROM LINE 26 TO 37 TO AVOID THE SIMULATOR TO WORK --------------------------
 
         FXMLLoader loader = new FXMLLoader(
                 Main.class.getResource("/org/store/vinyl/View/Vinyl.fxml")

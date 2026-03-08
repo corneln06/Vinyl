@@ -1,4 +1,4 @@
-package org.store.vinyl;
+package org.store.vinyl.Simulator;
 
 import javafx.application.Platform;
 import org.store.vinyl.Model.User;
