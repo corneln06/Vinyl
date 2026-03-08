@@ -96,17 +96,4 @@ public class Vinyl implements PropertyChangeSubject {
         support.removePropertyChangeListener(listener);
 
     }
-
-    // think we don't need the ones below
-
-
-
-    public StringProperty borrowedByProperty() {
-        return borrowedBy;
-    }
-
-
-    public StringProperty reservedByProperty() {
-        return reservedBy;
-    }
 }
