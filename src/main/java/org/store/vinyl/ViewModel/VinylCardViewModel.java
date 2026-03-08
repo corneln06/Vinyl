@@ -20,6 +20,8 @@ public class VinylCardViewModel implements PropertyChangeListener {
     private static final String RED_BUTTON =
             "-fx-background-color: red; -fx-background-radius: 30; -fx-text-fill: white;";
 
+    private record ButtonConfig(String text, boolean disabled, String style) {}
+
     private final Vinyl vinyl;
     private final VinylBookViewModel parentViewModel;
 
@@ -97,6 +99,41 @@ public class VinylCardViewModel implements PropertyChangeListener {
         refreshButtonState();
     }
 
+    private ButtonConfig resolveButtonConfig(String state,
+                                             String currentUserId,
+                                             String reservedBy,
+                                             String borrowedBy) {
+
+        boolean isReserver = Objects.equals(currentUserId, reservedBy);
+        boolean isBorrower = Objects.equals(currentUserId, borrowedBy);
+        boolean hasReservation = reservedBy != null && !reservedBy.isEmpty();
+
+        return switch (state) {
+            case "Available" -> (!hasReservation || isReserver)
+                    ? new ButtonConfig("Borrow", false, GREEN_BUTTON)
+                    : new ButtonConfig("Unavailable", true, GREY_BUTTON);
+
+            case "Borrowed" -> {
+                if (isBorrower) {
+                    yield new ButtonConfig("Return", false, RED_BUTTON);
+                }
+                if (!hasReservation) {
+                    yield new ButtonConfig("Reserve", false, GREEN_BUTTON);
+                }
+                if (isReserver) {
+                    yield new ButtonConfig("Reserved", true, GREY_BUTTON);
+                }
+                yield new ButtonConfig("Unavailable", true, GREY_BUTTON);
+            }
+
+            case "Reserved" -> isReserver
+                    ? new ButtonConfig("Borrow", false, GREEN_BUTTON)
+                    : new ButtonConfig("Unavailable", true, GREY_BUTTON);
+
+            default -> new ButtonConfig("Unavailable", true, GREY_BUTTON);
+        };
+    }
+
     private void refreshButtonState() {
         User currentUser = parentViewModel.getSelectedUser();
 
@@ -112,46 +149,11 @@ public class VinylCardViewModel implements PropertyChangeListener {
         String borrowedBy = vinyl.getBorrowedBy();
         String reservedBy = vinyl.getReservedBy();
 
-        if ("Available".equals(state) && (reservedBy.isEmpty() || Objects.equals(currentUserId, reservedBy))) {
-            buttonText.set("Borrow");
-            buttonDisabled.set(false);
-            buttonStyle.set(GREEN_BUTTON);
+        ButtonConfig config = resolveButtonConfig(state, currentUserId, reservedBy, borrowedBy);
 
-        } else if ("Borrowed".equals(state) && Objects.equals(currentUserId, borrowedBy)) {
-            buttonText.set("Return");
-            buttonDisabled.set(false);
-            buttonStyle.set(RED_BUTTON);
-
-        } else if ("Borrowed".equals(state) && !reservedBy.isEmpty() && Objects.equals(currentUserId, reservedBy)) {
-            buttonText.set("Reserved");
-            buttonDisabled.set(true);
-            buttonStyle.set(GREY_BUTTON);
-
-        } else if ("Borrowed".equals(state) && !reservedBy.isEmpty() && !Objects.equals(currentUserId, reservedBy)) {
-            buttonText.set("Unavailable");
-            buttonDisabled.set(true);
-            buttonStyle.set(GREY_BUTTON);
-
-        } else if ("Borrowed".equals(state) && reservedBy.isEmpty()) {
-            buttonText.set("Reserve");
-            buttonDisabled.set(false);
-            buttonStyle.set(GREEN_BUTTON);
-
-        } else if ("Reserved".equals(state) && Objects.equals(currentUserId, reservedBy)) {
-            buttonText.set("Borrow");
-            buttonDisabled.set(false);
-            buttonStyle.set(GREEN_BUTTON);
-
-        } else if ("Reserved".equals(state)) {
-            buttonText.set("Unavailable");
-            buttonDisabled.set(true);
-            buttonStyle.set(GREY_BUTTON);
-
-        } else if ("Available".equals(state) && !reservedBy.isEmpty() && !Objects.equals(currentUserId, reservedBy)) {
-            buttonText.set("Unavailable");
-            buttonDisabled.set(true);
-            buttonStyle.set(GREY_BUTTON);
-        }
+        buttonText.set(config.text());
+        buttonDisabled.set(config.disabled());
+        buttonStyle.set(config.style());
     }
 
     @Override
