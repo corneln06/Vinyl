@@ -1,6 +1,7 @@
 package org.store.vinyl;
 
-import org.store.vinyl.Interfaces.State;
+import org.store.vinyl.Model.States.State;
+import org.store.vinyl.Model.Vinyl;
 
 public class ReservedState implements State {
     @Override
@@ -15,10 +16,10 @@ public class ReservedState implements State {
 
     @Override
     public void borrow(Vinyl vinyl, String userId) {
-        if (vinyl.getBorrowedBy().equals(userId)){
+        if (vinyl.getReservedBy().equals(userId)){
+            vinyl.setState(new BorrowedState());
             vinyl.setBorrowedBy(userId);
             vinyl.setReservedBy("");
-            vinyl.setState(new ReservedState());
         } else{
             System.out.println("Vinyl is already reserved by another user, we apologize for the inconvenience");
         }

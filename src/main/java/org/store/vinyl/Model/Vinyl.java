@@ -1,10 +1,10 @@
-package org.store.vinyl;
+package org.store.vinyl.Model;
 
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import org.store.vinyl.Model.States.AvailableState;
 import org.store.vinyl.Interfaces.PropertyChangeSubject;
-import org.store.vinyl.Interfaces.State;
+import org.store.vinyl.Model.States.State;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -68,10 +68,11 @@ public class Vinyl implements PropertyChangeSubject {
 
     // Vinyl actions
     public void reserve(User user) {
-        currentState.reserve(this, user.getUserId().toString());
+        currentState.reserve(this, user.getUserId());
     }
     public void borrow(User user) {
-        currentState.borrow(this, user.getUserId().toString());
+        System.out.println(currentState.getStateName());
+        currentState.borrow(this, user.getUserId());
     }
     public void returnVinyl() {
         currentState.returnVinyl(this);

@@ -1,7 +1,8 @@
 package org.store.vinyl;
 
-import javafx.beans.property.SimpleStringProperty;
-import org.store.vinyl.Interfaces.State;
+import org.store.vinyl.Model.States.AvailableState;
+import org.store.vinyl.Model.States.State;
+import org.store.vinyl.Model.Vinyl;
 
 public class BorrowedState implements State {
     @Override
@@ -12,7 +13,6 @@ public class BorrowedState implements State {
     @Override
     public void reserve(Vinyl vinyl, String userId) {
         vinyl.setReservedBy(userId);
-        vinyl.setState(new ReservedState());
     }
 
     @Override

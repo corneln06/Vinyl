@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import org.store.vinyl.Model.Vinyl;
 
 import java.io.File;
 import java.io.IOException;

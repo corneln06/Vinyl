@@ -1,6 +1,7 @@
 package org.store.vinyl;
 
 import org.store.vinyl.Interfaces.PropertyChangeSubject;
+import org.store.vinyl.Model.Vinyl;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

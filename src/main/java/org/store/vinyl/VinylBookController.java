@@ -13,6 +13,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import org.store.vinyl.Model.User;
+import org.store.vinyl.Model.Vinyl;
 
 import java.net.URL;
 import java.util.List;
@@ -23,6 +25,7 @@ public class VinylBookController implements Initializable {
 
     @FXML
     private FlowPane vinylContainer;
+
     @FXML
     private ChoiceBox<String> userSelector;
 
@@ -56,8 +59,13 @@ public class VinylBookController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        renderVinyls();
         addUsers();
+        renderVinyls();
+
+        userSelector.setOnAction(e -> {
+            setCurrentUser();
+            renderVinyls();
+        });
     }
 
     private void renderVinyls() {
@@ -101,7 +109,6 @@ public class VinylBookController implements Initializable {
 
             boolean isThisCardOpen = (boolean) card.getUserData();
 
-            // If the card is already open, close it
             if (isThisCardOpen) {
                 flipCard(card, front, back, () -> {
                     openedCard = null;
@@ -111,7 +118,6 @@ public class VinylBookController implements Initializable {
                 return;
             }
 
-            // If there is a card open, first close that one and then open a new one
             if (openedCard != null && openedCard != card) {
                 StackPane previousCard = openedCard;
                 Pane previousFront = openedFront;
@@ -131,7 +137,6 @@ public class VinylBookController implements Initializable {
                 return;
             }
 
-            // If no card is open, open this one
             flipCard(card, front, back, () -> {
                 openedCard = card;
                 openedFront = front;
@@ -148,7 +153,7 @@ public class VinylBookController implements Initializable {
         front.setStyle("-fx-background-color: #AFAFAF; -fx-background-radius: 10;");
 
         ImageView imageView = new ImageView(
-                new Image(getClass().getResourceAsStream("/Images/pic.png"))
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/pic.png")))
         );
         imageView.setFitWidth(99);
         imageView.setFitHeight(99);
@@ -169,30 +174,58 @@ public class VinylBookController implements Initializable {
         bookButton.setPrefSize(90, 20);
 
         Runnable refreshButton = () -> {
-            if ("Borrowed".equals(vinyl.getCurrentState().getStateName()) && Objects.equals(currentUser.getUserId(), vinyl.getReservedBy())) {
-                bookButton.setText("Return");
-                bookButton.setDisable(false);
-                bookButton.setStyle("-fx-background-color: red; -fx-background-radius: 30; -fx-text-fill: white;");
-            } else if ("Borrowed".equals(vinyl.getCurrentState().getStateName()) && !vinyl.getReservedBy().isEmpty() && Objects.equals(currentUser.getUserId(), vinyl.getReservedBy())) {
-                bookButton.setText("Reserved");
+            String state = vinyl.getCurrentState().getStateName();
+
+            if (currentUser == null) {
+                bookButton.setText("Select user");
                 bookButton.setDisable(true);
                 bookButton.setStyle("-fx-background-color: grey; -fx-background-radius: 30; -fx-text-fill: white;");
-            } else if ("Borrowed".equals(vinyl.getCurrentState().getStateName()) && !vinyl.getReservedBy().isEmpty() && !Objects.equals(currentUser.getUserId(), vinyl.getReservedBy())) {
-                bookButton.setText("Unavailable");
-                bookButton.setDisable(true);
-                bookButton.setStyle("-fx-background-color: grey; -fx-background-radius: 30; -fx-text-fill: white;");
-            } else if ("Reserved".equals(vinyl.getCurrentState().getStateName()) && Objects.equals(currentUser.getUserId(), vinyl.getReservedBy())) {
+                return;
+            }
+
+            String currentUserId = currentUser.getUserId();
+            String borrowedBy = vinyl.getBorrowedBy();
+            String reservedBy = vinyl.getReservedBy();
+
+            if ("Available".equals(state) && (reservedBy.isEmpty() || Objects.equals(currentUserId, reservedBy))) {
                 bookButton.setText("Borrow");
                 bookButton.setDisable(false);
                 bookButton.setStyle("-fx-background-color: #51D03A; -fx-background-radius: 30; -fx-text-fill: white;");
-            } else if ("Reserved".equals(vinyl.getCurrentState().getStateName()) && !Objects.equals(currentUser.getUserId(), vinyl.getReservedBy())) {
+
+            } else if ("Borrowed".equals(state) && Objects.equals(currentUserId, borrowedBy)) {
+                bookButton.setText("Return");
+                bookButton.setDisable(false);
+                bookButton.setStyle("-fx-background-color: red; -fx-background-radius: 30; -fx-text-fill: white;");
+
+            } else if ("Borrowed".equals(state) && !reservedBy.isEmpty() && Objects.equals(currentUserId, reservedBy)) {
+                bookButton.setText("Reserved");
+                bookButton.setDisable(true);
+                bookButton.setStyle("-fx-background-color: grey; -fx-background-radius: 30; -fx-text-fill: white;");
+
+            } else if ("Borrowed".equals(state) && !reservedBy.isEmpty() && !Objects.equals(currentUserId, reservedBy)) {
                 bookButton.setText("Unavailable");
                 bookButton.setDisable(true);
                 bookButton.setStyle("-fx-background-color: grey; -fx-background-radius: 30; -fx-text-fill: white;");
-            } else {
-                bookButton.setText("Book");
+
+            } else if ("Borrowed".equals(state) && reservedBy.isEmpty()) {
+                bookButton.setText("Reserve");
                 bookButton.setDisable(false);
                 bookButton.setStyle("-fx-background-color: #51D03A; -fx-background-radius: 30; -fx-text-fill: white;");
+
+            } else if ("Reserved".equals(state) && Objects.equals(currentUserId, reservedBy)) {
+                bookButton.setText("Borrow");
+                bookButton.setDisable(false);
+                bookButton.setStyle("-fx-background-color: #51D03A; -fx-background-radius: 30; -fx-text-fill: white;");
+
+            } else if ("Reserved".equals(state)) {
+                bookButton.setText("Unavailable");
+                bookButton.setDisable(true);
+                bookButton.setStyle("-fx-background-color: grey; -fx-background-radius: 30; -fx-text-fill: white;");
+
+            } else if ("Available".equals(state) && !reservedBy.isEmpty() && !Objects.equals(currentUserId, reservedBy)){
+                bookButton.setText("Unavailable");
+                bookButton.setDisable(true);
+                bookButton.setStyle("-fx-background-color: grey; -fx-background-radius: 30; -fx-text-fill: white;");
             }
         };
 
@@ -209,15 +242,29 @@ public class VinylBookController implements Initializable {
         bookButton.setOnAction(e -> {
             e.consume();
 
-            if ("Available".equals(vinyl.getCurrentState().getStateName())) {
+            if (currentUser == null) {
+                return;
+            }
+
+            String state = vinyl.getCurrentState().getStateName();
+            String currentUserId = currentUser.getUserId();
+
+            if ("Available".equals(state)) {
                 vinyl.borrow(currentUser);
-            } else if ("Borrowed".equals(vinyl.getCurrentState().getStateName()) && vinyl.getReservedBy().isEmpty()) {
+
+            } else if ("Borrowed".equals(state) && Objects.equals(currentUserId, vinyl.getBorrowedBy())) {
+                vinyl.returnVinyl();
+
+            } else if ("Borrowed".equals(state)
+                    && (vinyl.getReservedBy() == null || vinyl.getReservedBy().isEmpty())
+                    && !Objects.equals(currentUserId, vinyl.getBorrowedBy())) {
                 vinyl.reserve(currentUser);
-            } else if ("Reserved".equals(vinyl.getCurrentState().getStateName())) {
+
+            } else if ("Reserved".equals(state) && Objects.equals(currentUserId, vinyl.getReservedBy())) {
                 vinyl.borrow(currentUser);
             }
 
-            System.out.println(vinyl.getCurrentState().getStateName());
+            refreshButton.run();
         });
 
         front.getChildren().addAll(imageView, titleLabel, bookButton);

@@ -7,4 +7,8 @@ module org.store.vinyl {
 
     opens org.store.vinyl to javafx.fxml;
   exports org.store.vinyl;
+    exports org.store.vinyl.Model;
+    opens org.store.vinyl.Model to javafx.fxml;
+    exports org.store.vinyl.Model.States;
+    opens org.store.vinyl.Model.States to javafx.fxml;
 }

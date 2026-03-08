@@ -1,6 +1,4 @@
-package org.store.vinyl;
-
-import javafx.beans.property.StringProperty;
+package org.store.vinyl.Model;
 
 public class User
 {
