@@ -64,8 +64,8 @@ public class Controller
             );
             Parent root = loader.load();
             VinylBookController controller = loader.getController();
-            controller.setMainController(this);
-            controller.setItem(vinyl);
+            //controller.setMainController(this);
+            //controller.setItem(vinyl);
             Stage stage = new Stage();
             stage.setTitle("Book Vinyl");
             stage.setScene(new Scene(root));
