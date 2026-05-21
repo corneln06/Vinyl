@@ -1,9 +1,13 @@
 package org.store.vinyl.Model;
 
-public class User
+import java.io.Serializable;
+
+public class User implements Serializable
 {
-  private String name;
-  private String userId;
+  private static final long serialVersionUID = 1L;
+
+  private final String name;
+  private final String userId;
 
   public User(String name, String userId){
     this.name = name;

@@ -4,8 +4,9 @@ module org.store.vinyl {
     requires java.desktop;
     requires com.fasterxml.jackson.databind;
     requires javafx.base;
+  requires java.sql;
 
-    exports org.store.vinyl.Model;
+  exports org.store.vinyl.Model;
     opens org.store.vinyl.Model to javafx.fxml;
 
     exports org.store.vinyl.Model.States;

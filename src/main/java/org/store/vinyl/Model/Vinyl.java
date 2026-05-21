@@ -1,34 +1,36 @@
 package org.store.vinyl.Model;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import org.store.vinyl.Model.States.AvailableState;
 import org.store.vinyl.Interfaces.PropertyChangeSubject;
+import org.store.vinyl.Model.States.AvailableState;
 import org.store.vinyl.Model.States.State;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
-public class Vinyl implements PropertyChangeSubject {
-    private String title;
-    private String artist;
-    private int releaseYear;
+public class Vinyl implements PropertyChangeSubject, Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final String title;
+    private final String artist;
+    private final int releaseYear;
     private State currentState;
-    private StringProperty borrowedBy;
-    private StringProperty reservedBy;
-    private PropertyChangeSupport support;
+    private String borrowedBy;
+    private String reservedBy;
+    private transient PropertyChangeSupport support;
 
     public Vinyl(String title, String artist, int releaseYear) {
         this.title = title;
         this.artist = artist;
         this.releaseYear = releaseYear;
-        borrowedBy = new SimpleStringProperty("");
-        reservedBy = new SimpleStringProperty("");
-        currentState = new AvailableState();
-        support = new PropertyChangeSupport(this);
+        this.borrowedBy = "";
+        this.reservedBy = "";
+        this.currentState = new AvailableState();
+        this.support = new PropertyChangeSupport(this);
     }
 
-    // Getters
     public String getArtist() {
         return artist;
     }
@@ -39,61 +41,73 @@ public class Vinyl implements PropertyChangeSubject {
         return releaseYear;
     }
     public String getBorrowedBy() {
-        return borrowedBy.get();
+        return borrowedBy;
     }
     public String getReservedBy() {
-        return reservedBy.get();
+        return reservedBy;
     }
     public State getCurrentState() {
         return currentState;
     }
 
-    // Setters
     public void setState(State newState) {
         State old = this.currentState;
         this.currentState = newState;
-        support.firePropertyChange("state", old, newState);
+        getSupport().firePropertyChange("state", old, newState);
     }
     public void setBorrowedBy(String borrowedBy) {
-        String oldVal = this.borrowedBy.get();
-        this.borrowedBy.set(borrowedBy);
-        support.firePropertyChange("borrowedBy", oldVal, borrowedBy);
-
+        String oldVal = this.borrowedBy;
+        this.borrowedBy = borrowedBy == null ? "" : borrowedBy;
+        getSupport().firePropertyChange("borrowedBy", oldVal, this.borrowedBy);
     }
     public void setReservedBy(String reservedBy) {
-        String oldVal = this.reservedBy.get();
-        this.reservedBy.set(reservedBy);
-        support.firePropertyChange("reservedBy", oldVal, reservedBy);
+        String oldVal = this.reservedBy;
+        this.reservedBy = reservedBy == null ? "" : reservedBy;
+        getSupport().firePropertyChange("reservedBy", oldVal, this.reservedBy);
     }
 
-    // Vinyl actions
     public void reserve(User user) {
+        if (user == null) {
+            return;
+        }
         currentState.reserve(this, user.getUserId());
     }
     public void borrow(User user) {
-        System.out.println(currentState.getStateName());
+        if (user == null) {
+            return;
+        }
         currentState.borrow(this, user.getUserId());
     }
     public void returnVinyl() {
         currentState.returnVinyl(this);
     }
 
-    // Listeners
     @Override
     public void addPropertyChangeListener(String name, PropertyChangeListener listener) {
-        support.addPropertyChangeListener(name, listener);
+        getSupport().addPropertyChangeListener(name, listener);
     }
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        support.addPropertyChangeListener(listener);
+        getSupport().addPropertyChangeListener(listener);
     }
     @Override
     public void removePropertyChangeListener(String name, PropertyChangeListener listener) {
-        support.removePropertyChangeListener(name, listener);
+        getSupport().removePropertyChangeListener(name, listener);
     }
     @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
-        support.removePropertyChangeListener(listener);
+        getSupport().removePropertyChangeListener(listener);
+    }
 
+    private PropertyChangeSupport getSupport() {
+        if (support == null) {
+            support = new PropertyChangeSupport(this);
+        }
+        return support;
+    }
+
+    private void readObject(ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
+        inputStream.defaultReadObject();
+        support = new PropertyChangeSupport(this);
     }
 }

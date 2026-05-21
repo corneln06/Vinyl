@@ -31,20 +31,20 @@ public class VinylUserSimulator implements Runnable {
                     continue;
                 }
 
-                Vinyl vinyl = vinyls.get(random.nextInt(vinyls.size()));
-                int action = random.nextInt(3);
-
-                Platform.runLater(() -> {
-                    viewModel.selectedUserNameProperty().set(user.getName());
-
-                    switch (action) {
-                        case 0 -> tryBorrow(vinyl);
-                        case 1 -> tryReserve(vinyl);
-                        case 2 -> tryReturn(vinyl);
-                    }
-
-                    System.out.println(user.getName() + " performed an action on " + vinyl.getTitle());
-                });
+//                Vinyl vinyl = vinyls.get(random.nextInt(vinyls.size()));
+//                int action = random.nextInt(3);
+//
+//                Platform.runLater(() -> {
+//                    viewModel.selectedUserNameProperty().set(user.getName());
+//
+//                    switch (action) {
+//                        case 0 -> tryBorrow(vinyl);
+//                        case 1 -> tryReserve(vinyl);
+//                        case 2 -> tryReturn(vinyl);
+//                    }
+//
+//                    System.out.println(user.getName() + " performed an action on " + vinyl.getTitle());
+//                });
 
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();

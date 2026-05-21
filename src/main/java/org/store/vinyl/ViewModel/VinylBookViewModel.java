@@ -1,7 +1,5 @@
 package org.store.vinyl.ViewModel;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.store.vinyl.Model.User;
@@ -11,16 +9,15 @@ import java.util.List;
 
 public class VinylBookViewModel {
 
-    private final List<User> users;
     private final ObservableList<VinylCardViewModel> vinyls;
-    private final StringProperty selectedUserName = new SimpleStringProperty();
+    private final User currentUser;
 
-    public VinylBookViewModel(List<Vinyl> vinylList, List<User> users) {
-        this.users = users;
+    public VinylBookViewModel(List<Vinyl> vinylList, User currentUser) {
         this.vinyls = FXCollections.observableArrayList();
+        this.currentUser = currentUser;
 
         for (Vinyl vinyl : vinylList) {
-            this.vinyls.add(new VinylCardViewModel(vinyl, this));
+            this.vinyls.add(new VinylCardViewModel(vinyl, currentUser));
         }
     }
 
@@ -28,26 +25,28 @@ public class VinylBookViewModel {
         return vinyls;
     }
 
-    public List<String> getUserNames() {
-        return users.stream()
-                .map(User::getName)
-                .toList();
+    public User getCurrentUser() {
+        return currentUser;
     }
 
-    public StringProperty selectedUserNameProperty() {
-        return selectedUserName;
+    public void setVinyls(List<Vinyl> vinylList) {
+        vinyls.clear();
+
+        for (Vinyl vinyl : vinylList) {
+            vinyls.add(new VinylCardViewModel(vinyl, currentUser));
+        }
     }
 
-    public User getSelectedUser() {
-        String selectedName = selectedUserName.get();
+    public void updateVinyl(Vinyl updatedVinyl) {
+        for (int i = 0; i < vinyls.size(); i++) {
+            VinylCardViewModel vinylVm = vinyls.get(i);
 
-        if (selectedName == null || selectedName.isBlank()) {
-            return null;
+            if (vinylVm.titleProperty().get().equals(updatedVinyl.getTitle())) {
+                vinyls.set(i, new VinylCardViewModel(updatedVinyl, currentUser));
+                return;
+            }
         }
 
-        return users.stream()
-                .filter(user -> user.getName().equals(selectedName))
-                .findFirst()
-                .orElse(null);
+        vinyls.add(new VinylCardViewModel(updatedVinyl, currentUser));
     }
 }
