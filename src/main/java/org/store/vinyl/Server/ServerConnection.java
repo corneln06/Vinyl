@@ -1,6 +1,7 @@
 package org.store.vinyl.Server;
 
 import org.store.vinyl.Data.DemoData;
+import org.store.vinyl.Logger;
 import org.store.vinyl.Model.Vinyl;
 import org.store.vinyl.Server.dto.*;
 
@@ -9,16 +10,20 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
 public class ServerConnection implements Runnable
 {
   private static final ArrayList<Vinyl> vinyls = new ArrayList<>(DemoData.getVinyls());
-
   private final Socket socket;
   private final ConnectionPool connectionPool;
   private final ObjectOutputStream outputStream;
   private final ObjectInputStream inputStream;
+  private LocalDateTime localDateTime;
+    Logger logger = Logger.getInstance();
 
   public ServerConnection(Socket connectionSocket, ConnectionPool connectionPool){
     this.socket = connectionSocket;
@@ -100,6 +105,12 @@ public class ServerConnection implements Runnable
       {
         vinyl.returnVinyl();
         connectionPool.broadcast(new VinylUpdatedMessage(vinyl));
+        logger.log(
+                "The vinyl has been returned",
+                request.getUser().getUserId(),
+                socket.getInetAddress().getHostAddress(),
+                vinyl.getTitle()
+        );
       }
     }
   }
@@ -120,6 +131,12 @@ public class ServerConnection implements Runnable
           && !request.getUser().getUserId().equals(vinyl.getBorrowedBy()))
       {
         vinyl.reserve(request.getUser());
+        logger.log(
+                "The vinyl has been reserved",
+                request.getUser().getUserId(),
+                socket.getInetAddress().getHostAddress(),
+                vinyl.getTitle()
+        );
         connectionPool.broadcast(new VinylUpdatedMessage(vinyl));
       }
     }
@@ -159,6 +176,12 @@ public class ServerConnection implements Runnable
           || ("Reserved".equals(state) && userId.equals(vinyl.getReservedBy())))
       {
         vinyl.borrow(request.getUser());
+        logger.log(
+                "The vinyl has been borrowed",
+                request.getUser().getUserId(),
+                socket.getInetAddress().getHostAddress(),
+                vinyl.getTitle()
+        );
         connectionPool.broadcast(new VinylUpdatedMessage(vinyl));
       }
     }
@@ -168,8 +191,17 @@ public class ServerConnection implements Runnable
     {
         synchronized (vinyls)
         {
-            vinyls.removeIf(vinyl ->
-                    vinyl.getTitle().equals(request.getTitle())
+            Vinyl vinyl = findVinylByTitle(request.getTitle());
+
+            vinyls.removeIf(vinylToDelete ->
+                    vinylToDelete.getTitle().equals(request.getTitle())
+            );
+
+            logger.log(
+                    "The vinyl has been deleted",
+                    request.getUser().getUserId(),
+                    socket.getInetAddress().getHostAddress(),
+                    vinyl.getTitle()
             );
 
             connectionPool.broadcast(

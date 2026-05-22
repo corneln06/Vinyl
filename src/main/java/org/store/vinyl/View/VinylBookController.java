@@ -13,6 +13,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import org.store.vinyl.Logger;
 import org.store.vinyl.Model.Vinyl;
 import org.store.vinyl.Server.dto.GetAllVinylsRequest;
 import org.store.vinyl.Services.VinylsService;
@@ -36,6 +37,7 @@ public class VinylBookController implements Initializable
     private Pane openedFront = null;
     private Pane openedBack = null;
     private boolean isFlipping = false;
+    private Logger logger = Logger.getInstance();
 
     private VinylsService service;
 

@@ -19,6 +19,7 @@ public class Vinyl implements PropertyChangeSubject, Serializable {
     private State currentState;
     private String borrowedBy;
     private String reservedBy;
+    private String returnedBy;
     private transient PropertyChangeSupport support;
 
     public Vinyl(String title, String artist, int releaseYear) {
@@ -27,6 +28,7 @@ public class Vinyl implements PropertyChangeSubject, Serializable {
         this.releaseYear = releaseYear;
         this.borrowedBy = "";
         this.reservedBy = "";
+        this.returnedBy ="";
         this.currentState = new AvailableState();
         this.support = new PropertyChangeSupport(this);
     }
@@ -46,6 +48,8 @@ public class Vinyl implements PropertyChangeSubject, Serializable {
     public String getReservedBy() {
         return reservedBy;
     }
+
+
     public State getCurrentState() {
         return currentState;
     }

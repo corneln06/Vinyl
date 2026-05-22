@@ -32,7 +32,7 @@ public class VinylsService
     client.send(new BorrowVinylRequest(title, currentUser));
   }
   public void deleteVinyl(String title){
-      client.send(new DeleteVinylRequest(title));
+      client.send(new DeleteVinylRequest(title, currentUser));
   }
   public void returnVinyl(String title){
     client.send(new ReturnVinylRequest(title, currentUser));
