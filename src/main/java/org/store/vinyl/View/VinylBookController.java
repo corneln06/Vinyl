@@ -16,10 +16,12 @@ import javafx.util.Duration;
 import org.store.vinyl.Model.Vinyl;
 import org.store.vinyl.Server.dto.GetAllVinylsRequest;
 import org.store.vinyl.Services.VinylsService;
+import org.store.vinyl.Strategy.*;
 import org.store.vinyl.ViewModel.VinylBookViewModel;
 import org.store.vinyl.ViewModel.VinylCardViewModel;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -90,6 +92,14 @@ public class VinylBookController implements Initializable
             Platform.runLater(() ->
             {
                 viewModel.updateVinyl(message.getVinyl());
+                renderVinyls();
+            });
+        });
+
+        service.onVinylDelete(message ->{
+            Platform.runLater(() ->
+            {
+                viewModel.removeVinyl(message.getTitle());
                 renderVinyls();
             });
         });
@@ -237,27 +247,55 @@ public class VinylBookController implements Initializable
                 return;
             }
 
-            String action = vinylVm.buttonTextProperty().get();
-            String title = vinylVm.titleProperty().get();
+            Map<String, VinylActionStrategy> strategies = Map.of(
+                    "Borrow", new BorrowStrategy(),
+                    "Reserve", new ReserveStrategy(),
+                    "Return", new ReturnStrategy()
+            );
 
-            if(action.equals("Borrow"))
+            String action = vinylVm.buttonTextProperty().get();
+
+            VinylActionStrategy strategy = strategies.get(action);
+
+            if(strategy != null)
             {
-                service.borrowVinyl(title);
+                strategy.execute(vinylVm.getVinyl(), service);
             }
-            else if(action.equals("Reserve"))
+        });
+
+
+        Button deleteButton = new Button("✕");
+        deleteButton.setLayoutX(100);
+        deleteButton.setLayoutY(3);
+        deleteButton.setPrefSize(18, 18);
+        deleteButton.setStyle(
+                "-fx-background-color: red;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 12;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-background-radius: 80;" +
+                        "-fx-border-radius: 100;"
+        );
+        deleteButton.setOnAction(e ->
+        {
+            e.consume();
+
+            if(service == null)
             {
-                service.reserveVinyl(title);
+                return;
             }
-            else if(action.equals("Return"))
-            {
-                service.returnVinyl(title);
-            }
+
+//            DeleteVinylRequest request = new DeleteVinylRequest(vinylVm.getVinyl().getTitle());
+
+            service.deleteVinyl(vinylVm.getVinyl().getTitle());
+            System.out.println("LALALAL");
         });
 
         front.getChildren().addAll(
             imageView,
             titleLabel,
-            bookButton
+            bookButton,
+                deleteButton
         );
 
         return front;

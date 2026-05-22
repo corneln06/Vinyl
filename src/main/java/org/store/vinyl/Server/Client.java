@@ -21,9 +21,11 @@ public class Client
   private Consumer<BorrowVinylResponse> borrowVinylListener;
   private Consumer<ReturnVinylResponse> returnVinylListener;
   private Consumer<VinylUpdatedMessage> vinylUpdatedListener;
+  private Consumer<DeleteVinylResponse> deleteVinylListener;
 
   public void connect() throws IOException{
-    socket = new Socket("localhost", 2910);
+    socket = new Socket("10.154.198.25", 2910);
+//      socket = new Socket("localHost", 2910);
 
     outputStream = new ObjectOutputStream(socket.getOutputStream());
     outputStream.flush();
@@ -69,6 +71,10 @@ public class Client
             {
               vinylUpdatedListener.accept(message);
             }
+            else if (object instanceof DeleteVinylResponse message && deleteVinylListener != null)
+            {
+                deleteVinylListener.accept(message);
+            }
           });
         }
       }
@@ -100,4 +106,5 @@ public class Client
   public void setVinylUpdatedListener(Consumer<VinylUpdatedMessage> listener){
     this.vinylUpdatedListener = listener;
   }
+  public void setDeleteVinylListener(Consumer<DeleteVinylResponse> listener){ this.deleteVinylListener = listener; }
 }

@@ -49,4 +49,11 @@ public class VinylBookViewModel {
 
         vinyls.add(new VinylCardViewModel(updatedVinyl, currentUser));
     }
+
+    public void removeVinyl(String title)
+    {
+        vinyls.removeIf(vinylVm ->
+                vinylVm.getVinyl().getTitle().equals(title)
+        );
+    }
 }
