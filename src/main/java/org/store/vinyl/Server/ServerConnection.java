@@ -87,6 +87,7 @@ public class ServerConnection implements Runnable
 
   private void handleReturnVinyl(ReturnVinylRequest request)
   {
+      System.out.println("ENTRE");
     synchronized (vinyls)
     {
       Vinyl vinyl = findVinylByTitle(request.getTitle());
@@ -101,6 +102,8 @@ public class ServerConnection implements Runnable
         vinyl.returnVinyl();
         connectionPool.broadcast(new VinylUpdatedMessage(vinyl));
       }
+
+        System.out.println(vinyl.getReservedBy());
     }
   }
 
