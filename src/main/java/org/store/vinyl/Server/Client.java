@@ -24,8 +24,8 @@ public class Client
   private Consumer<DeleteVinylResponse> deleteVinylListener;
 
   public void connect() throws IOException{
-//    socket = new Socket("10.154.198.25", 2910);
-      socket = new Socket("localHost", 2910);
+    socket = new Socket("10.154.198.25", 2910);
+//      socket = new Socket("localHost", 2910);
 
     outputStream = new ObjectOutputStream(socket.getOutputStream());
     outputStream.flush();

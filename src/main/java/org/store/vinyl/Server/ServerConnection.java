@@ -168,10 +168,12 @@ public class ServerConnection implements Runnable
   {
       synchronized (vinyls)
       {
-          vinyls.removeIf(vinyl ->
-                  vinyl.getTitle().equals(request.getTitle())
+          Vinyl vinyl = findVinylByTitle(request.getTitle());
+          vinyls.removeIf(vinylToDelete ->
+                  vinylToDelete.getTitle().equals(request.getTitle())
           );
           send(new DeleteVinylResponse(request.getTitle()));
+          connectionPool.broadcast(new VinylUpdatedMessage(vinyl));
       }
   }
 

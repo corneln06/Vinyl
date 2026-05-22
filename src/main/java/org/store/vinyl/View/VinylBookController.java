@@ -280,8 +280,9 @@ public class VinylBookController implements Initializable
 //            DeleteVinylRequest request = new DeleteVinylRequest(vinylVm.getVinyl().getTitle());
 
             service.deleteVinyl(vinylVm.getVinyl().getTitle());
+            System.out.println("LALALAL");
         });
-        
+
         front.getChildren().addAll(
             imageView,
             titleLabel,
