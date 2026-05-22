@@ -102,7 +102,7 @@ public class ServerConnection implements Runnable
         vinyl.returnVinyl();
         connectionPool.broadcast(new VinylUpdatedMessage(vinyl));
         logger.log("{ " +
-            "\"message\": \"The vinyl has been reserved\", " +
+            "\"message\": \"The vinyl " + vinyl.getTitle() + " has been reserved\", " +
             "\"time\": \"" + LocalDateTime.now() + "\", " +
             "\"by\": \"" + request.getUser() + "\", " +
             "\"ip\": \"" + socket.getInetAddress().getHostAddress() + "\"" +
@@ -129,7 +129,7 @@ public class ServerConnection implements Runnable
         vinyl.reserve(request.getUser());
 
         logger.log("{ " +
-                "\"message\": \"The vinyl has been reserved\", " +
+                "\"message\": \"The vinyl " + vinyl.getTitle() + " has been reserved\", " +
                 "\"time\": \"" + LocalDateTime.now() + "\", " +
                 "\"by\": \"" + vinyl.getReservedBy() + "\", " +
                 "\"ip\": \"" + socket.getInetAddress().getHostAddress() + "\"" +
@@ -174,7 +174,7 @@ public class ServerConnection implements Runnable
       {
         vinyl.borrow(request.getUser());
         logger.log("{ " +
-            "\"message\": \"The vinyl has been reserved\", " +
+            "\"message\": \"The vinyl " + vinyl.getTitle() + " has been reserved\", " +
             "\"time\": \"" + LocalDateTime.now() + "\", " +
             "\"by\": \"" + vinyl.getBorrowedBy() + "\", " +
             "\"ip\": \"" + socket.getInetAddress().getHostAddress() + "\"" +
