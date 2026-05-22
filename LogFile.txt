@@ -1,2 +1,0 @@
-The vinyl has been borrowed by org.store.vinyl.Model.User@79cc059c
-The vinyl has been returned
