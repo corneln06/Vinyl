@@ -57,7 +57,7 @@ public class ServerConnection implements Runnable
         }
         else if (object instanceof DeleteVinylRequest request)
         {
-            handleReturnVinyl(request);
+            handleDeleteVinyl(request);
         } else
         {
           System.out.println("[SERVER] Unknown object received");
@@ -164,9 +164,14 @@ public class ServerConnection implements Runnable
     }
   }
 
-  private void handleDeleteVinyl(DeleteVinylRequest request){
-      synchronized (vinyls){
-
+  private void handleDeleteVinyl(DeleteVinylRequest request)
+  {
+      synchronized (vinyls)
+      {
+          vinyls.removeIf(vinyl ->
+                  vinyl.getTitle().equals(request.getTitle())
+          );
+          send(new DeleteVinylResponse(request.getTitle()));
       }
   }
 

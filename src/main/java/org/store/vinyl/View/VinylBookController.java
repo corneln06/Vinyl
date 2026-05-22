@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import org.store.vinyl.Model.Vinyl;
+import org.store.vinyl.Server.dto.DeleteVinylRequest;
 import org.store.vinyl.Server.dto.GetAllVinylsRequest;
 import org.store.vinyl.Services.VinylsService;
 import org.store.vinyl.ViewModel.VinylBookViewModel;
@@ -267,17 +268,20 @@ public class VinylBookController implements Initializable
                         "-fx-background-radius: 80;" +
                         "-fx-border-radius: 100;"
         );
-//        deleteButton.setOnAction(e ->
-//        {
-//            e.consume();
-//
-//            if(service == null)
-//            {
-//                return;
-//            }
-//
-//            service.deleteVinyl(vinylVm.getVinyl().getTitle());
-//        });
+        deleteButton.setOnAction(e ->
+        {
+            e.consume();
+
+            if(service == null)
+            {
+                return;
+            }
+
+//            DeleteVinylRequest request = new DeleteVinylRequest(vinylVm.getVinyl().getTitle());
+
+            service.deleteVinyl(vinylVm.getVinyl().getTitle());
+        });
+        
         front.getChildren().addAll(
             imageView,
             titleLabel,
