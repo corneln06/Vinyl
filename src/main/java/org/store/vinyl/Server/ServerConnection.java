@@ -105,12 +105,12 @@ public class ServerConnection implements Runnable
       {
         vinyl.returnVinyl();
         connectionPool.broadcast(new VinylUpdatedMessage(vinyl));
-        logger.log("{ " +
-            "\"message\": \"The vinyl " + vinyl.getTitle() + " has been reserved\", " +
-            "\"time\": \"" + LocalDateTime.now() + "\", " +
-            "\"by\": \"" + request.getUser() + "\", " +
-            "\"ip\": \"" + socket.getInetAddress().getHostAddress() + "\"" +
-            " }");
+        logger.log(
+                "The vinyl has been returned",
+                request.getUser().getUserId(),
+                socket.getInetAddress().getHostAddress(),
+                vinyl.getTitle()
+        );
       }
     }
   }
@@ -131,13 +131,12 @@ public class ServerConnection implements Runnable
           && !request.getUser().getUserId().equals(vinyl.getBorrowedBy()))
       {
         vinyl.reserve(request.getUser());
-
-        logger.log("{ " +
-                "\"message\": \"The vinyl " + vinyl.getTitle() + " has been reserved\", " +
-                "\"time\": \"" + LocalDateTime.now() + "\", " +
-                "\"by\": \"" + vinyl.getReservedBy() + "\", " +
-                "\"ip\": \"" + socket.getInetAddress().getHostAddress() + "\"" +
-                " }");
+        logger.log(
+                "The vinyl has been reserved",
+                request.getUser().getUserId(),
+                socket.getInetAddress().getHostAddress(),
+                vinyl.getTitle()
+        );
         connectionPool.broadcast(new VinylUpdatedMessage(vinyl));
       }
     }
@@ -177,12 +176,12 @@ public class ServerConnection implements Runnable
           || ("Reserved".equals(state) && userId.equals(vinyl.getReservedBy())))
       {
         vinyl.borrow(request.getUser());
-        logger.log("{ " +
-            "\"message\": \"The vinyl " + vinyl.getTitle() + " has been reserved\", " +
-            "\"time\": \"" + LocalDateTime.now() + "\", " +
-            "\"by\": \"" + vinyl.getBorrowedBy() + "\", " +
-            "\"ip\": \"" + socket.getInetAddress().getHostAddress() + "\"" +
-            " }");
+        logger.log(
+                "The vinyl has been borrowed",
+                request.getUser().getUserId(),
+                socket.getInetAddress().getHostAddress(),
+                vinyl.getTitle()
+        );
         connectionPool.broadcast(new VinylUpdatedMessage(vinyl));
       }
     }
@@ -195,6 +194,13 @@ public class ServerConnection implements Runnable
             vinyls.removeIf(vinyl ->
                     vinyl.getTitle().equals(request.getTitle())
             );
+
+//            logger.log(
+//                    "The vinyl has been borrowed",
+//                    request.getUser().getUserId(),
+//                    socket.getInetAddress().getHostAddress(),
+//                    vinyl.getTitle()
+//            );
 
             connectionPool.broadcast(
                     new DeleteVinylResponse(request.getTitle())
