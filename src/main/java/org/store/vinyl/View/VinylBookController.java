@@ -14,13 +14,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import org.store.vinyl.Model.Vinyl;
-import org.store.vinyl.Server.dto.DeleteVinylRequest;
 import org.store.vinyl.Server.dto.GetAllVinylsRequest;
 import org.store.vinyl.Services.VinylsService;
+import org.store.vinyl.Strategy.*;
 import org.store.vinyl.ViewModel.VinylBookViewModel;
 import org.store.vinyl.ViewModel.VinylCardViewModel;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -246,20 +247,19 @@ public class VinylBookController implements Initializable
                 return;
             }
 
-            String action = vinylVm.buttonTextProperty().get();
-            String title = vinylVm.titleProperty().get();
+            Map<String, VinylActionStrategy> strategies = Map.of(
+                    "Borrow", new BorrowStrategy(),
+                    "Reserve", new ReserveStrategy(),
+                    "Return", new ReturnStrategy()
+            );
 
-            if(action.equals("Borrow"))
+            String action = vinylVm.buttonTextProperty().get();
+
+            VinylActionStrategy strategy = strategies.get(action);
+
+            if(strategy != null)
             {
-                service.borrowVinyl(title);
-            }
-            else if(action.equals("Reserve"))
-            {
-                service.reserveVinyl(title);
-            }
-            else if(action.equals("Return"))
-            {
-                service.returnVinyl(title);
+                strategy.execute(vinylVm.getVinyl(), service);
             }
         });
 
