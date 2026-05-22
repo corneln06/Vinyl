@@ -31,6 +31,9 @@ public class VinylsService
   public void borrowVinyl(String title){
     client.send(new BorrowVinylRequest(title, currentUser));
   }
+  public void deleteVinyl(String title){
+      client.send(new DeleteVinylRequest(title));
+  }
   public void returnVinyl(String title){
     client.send(new ReturnVinylRequest(title, currentUser));
   }
@@ -49,4 +52,6 @@ public class VinylsService
   public void onVinylUpdated(Consumer<VinylUpdatedMessage> listener){
     client.setVinylUpdatedListener(listener);
   }
+  public void onVinylDelete(Consumer<DeleteVinylResponse> listener){ client.setDeleteVinylListener(listener);}
+
 }

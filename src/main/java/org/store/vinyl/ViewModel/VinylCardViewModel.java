@@ -80,7 +80,17 @@ public class VinylCardViewModel implements PropertyChangeListener {
         String userId = currentUser.getUserId();
 
         return switch (state) {
-            case "Available" -> new ButtonConfig("Borrow", false, GREEN_BUTTON);
+            case "Available" -> {
+                if(vinyl.getReservedBy() != null
+                        && !vinyl.getReservedBy().isEmpty()
+                        && !userId.equals(vinyl.getReservedBy()))
+                {
+                    yield new ButtonConfig("Unavailable", true, GREY_BUTTON);
+                }
+
+                yield new ButtonConfig("Borrow", false, GREEN_BUTTON);
+            }
+
             case "Borrowed" -> {
                 if (userId.equals(vinyl.getBorrowedBy())) {
                     yield new ButtonConfig("Return", false, RED_BUTTON);
@@ -90,12 +100,14 @@ public class VinylCardViewModel implements PropertyChangeListener {
                 }
                 yield new ButtonConfig("Unavailable", true, GREY_BUTTON);
             }
+
             case "Reserved" -> {
                 if (userId.equals(vinyl.getReservedBy())) {
                     yield new ButtonConfig("Borrow", false, GREEN_BUTTON);
                 }
                 yield new ButtonConfig("Unavailable", true, GREY_BUTTON);
             }
+
             default -> new ButtonConfig("Unavailable", true, GREY_BUTTON);
         };
     }
