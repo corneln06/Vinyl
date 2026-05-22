@@ -49,4 +49,5 @@ public class VinylsService
   public void onVinylUpdated(Consumer<VinylUpdatedMessage> listener){
     client.setVinylUpdatedListener(listener);
   }
+
 }

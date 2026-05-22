@@ -26,6 +26,5 @@
                 </FlowPane>
             </content>
         </ScrollPane>
-      <ChoiceBox fx:id="userSelector" layoutX="455.0" layoutY="15.0" prefHeight="26.0" prefWidth="130.0" />
     </children>
 </Pane>

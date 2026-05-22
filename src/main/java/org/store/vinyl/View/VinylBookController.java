@@ -254,10 +254,35 @@ public class VinylBookController implements Initializable
             }
         });
 
+
+        Button deleteButton = new Button("✕");
+        deleteButton.setLayoutX(100);
+        deleteButton.setLayoutY(3);
+        deleteButton.setPrefSize(18, 18);
+        deleteButton.setStyle(
+                "-fx-background-color: red;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 12;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-background-radius: 80;" +
+                        "-fx-border-radius: 100;"
+        );
+//        deleteButton.setOnAction(e ->
+//        {
+//            e.consume();
+//
+//            if(service == null)
+//            {
+//                return;
+//            }
+//
+//            service.deleteVinyl(vinylVm.getVinyl().getTitle());
+//        });
         front.getChildren().addAll(
             imageView,
             titleLabel,
-            bookButton
+            bookButton,
+                deleteButton
         );
 
         return front;
