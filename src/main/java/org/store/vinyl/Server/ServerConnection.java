@@ -191,16 +191,18 @@ public class ServerConnection implements Runnable
     {
         synchronized (vinyls)
         {
-            vinyls.removeIf(vinyl ->
-                    vinyl.getTitle().equals(request.getTitle())
+            Vinyl vinyl = findVinylByTitle(request.getTitle());
+
+            vinyls.removeIf(vinylToDelete ->
+                    vinylToDelete.getTitle().equals(request.getTitle())
             );
 
-//            logger.log(
-//                    "The vinyl has been borrowed",
-//                    request.getUser().getUserId(),
-//                    socket.getInetAddress().getHostAddress(),
-//                    vinyl.getTitle()
-//            );
+            logger.log(
+                    "The vinyl has been deleted",
+                    request.getUser().getUserId(),
+                    socket.getInetAddress().getHostAddress(),
+                    vinyl.getTitle()
+            );
 
             connectionPool.broadcast(
                     new DeleteVinylResponse(request.getTitle())
