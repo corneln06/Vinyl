@@ -49,4 +49,6 @@ public class VinylBookViewModel {
 
         vinyls.add(new VinylCardViewModel(updatedVinyl, currentUser));
     }
+
+    
 }

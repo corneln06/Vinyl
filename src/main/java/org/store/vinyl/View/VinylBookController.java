@@ -95,6 +95,14 @@ public class VinylBookController implements Initializable
             });
         });
 
+        service.onVinylDelete(message ->{
+            Platform.runLater(() ->
+            {
+                viewModel.updateVinyl(message.getTitle());
+                renderVinyls();
+            });
+        });
+
     }
 
     @Override
