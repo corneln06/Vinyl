@@ -98,7 +98,7 @@ public class VinylBookController implements Initializable
         service.onVinylDelete(message ->{
             Platform.runLater(() ->
             {
-                viewModel.updateVinyl(message.getTitle());
+                viewModel.removeVinyl(message.getTitle());
                 renderVinyls();
             });
         });

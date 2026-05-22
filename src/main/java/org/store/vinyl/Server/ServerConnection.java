@@ -164,18 +164,19 @@ public class ServerConnection implements Runnable
     }
   }
 
-  private void handleDeleteVinyl(DeleteVinylRequest request)
-  {
-      synchronized (vinyls)
-      {
-          Vinyl vinyl = findVinylByTitle(request.getTitle());
-          vinyls.removeIf(vinylToDelete ->
-                  vinylToDelete.getTitle().equals(request.getTitle())
-          );
-          send(new DeleteVinylResponse(request.getTitle()));
-          connectionPool.broadcast(new VinylUpdatedMessage(vinyl));
-      }
-  }
+    private void handleDeleteVinyl(DeleteVinylRequest request)
+    {
+        synchronized (vinyls)
+        {
+            vinyls.removeIf(vinyl ->
+                    vinyl.getTitle().equals(request.getTitle())
+            );
+
+            connectionPool.broadcast(
+                    new DeleteVinylResponse(request.getTitle())
+            );
+        }
+    }
 
   public synchronized void send(Object object){
     try
