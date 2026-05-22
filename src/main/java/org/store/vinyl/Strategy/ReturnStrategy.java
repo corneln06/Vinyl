@@ -9,5 +9,6 @@ public class ReturnStrategy implements VinylActionStrategy
     public void execute(Vinyl vinyl, VinylsService service)
     {
         service.returnVinyl(vinyl.getTitle());
+        System.out.println(vinyl.getReservedBy());
     }
 }
