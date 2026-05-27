@@ -1,7 +1,7 @@
 package org.store.vinyl.Server;
 
 import org.store.vinyl.Data.DemoData;
-import org.store.vinyl.Logger;
+import org.store.vinyl.utils.Logger;
 import org.store.vinyl.Model.Vinyl;
 import org.store.vinyl.Server.dto.*;
 
@@ -12,8 +12,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
-import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
 public class ServerConnection implements Runnable
 {

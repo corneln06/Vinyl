@@ -13,7 +13,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
-import org.store.vinyl.Logger;
+import org.store.vinyl.utils.Logger;
 import org.store.vinyl.Model.Vinyl;
 import org.store.vinyl.Server.dto.GetAllVinylsRequest;
 import org.store.vinyl.Services.VinylsService;
@@ -109,7 +109,7 @@ public class VinylBookController implements Initializable
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
+    public void initialize(URL url , ResourceBundle resourceBundle)
     {
         renderVinyls();
         loadVinyls();
